@@ -35,6 +35,16 @@ const getInitialValues = (filters, normalizedFiltersCatalog) => {
     return flagPresentValues(filterNames, normalizedFiltersCatalog);
 };
 
+const getSources = (filters, normalizedFiltersCatalog) => {
+    const filterUrls = filters.map(filter => filter.url);
+    const normalizedSources = Object.values(normalizedFiltersCatalog)
+        .map(el => el.source).reduce((acc, curr) => {
+            acc[curr] = true;
+            return acc;
+        }, {});
+    return flagPresentValues(filterUrls, normalizedSources);
+};
+
 class Modal extends Component {
     closeModal = () => {
         this.props.toggleFilteringModal();
@@ -57,12 +67,15 @@ class Modal extends Component {
         } = this.props;
 
         let initialValues;
+        let selectedSources;
         switch (modalType) {
             case MODAL_TYPE.EDIT_FILTERS:
                 initialValues = currentFilterData;
                 break;
             case MODAL_TYPE.CHOOSE_FILTERING_LIST:
                 initialValues = getInitialValues(filters, normalizedFiltersCatalog);
+
+                selectedSources = getSources(filters, normalizedFiltersCatalog);
                 break;
             default:
         }
@@ -94,7 +107,7 @@ class Modal extends Component {
                         closeModal={this.closeModal}
                         whitelist={whitelist}
                         toggleFilteringModal={toggleFilteringModal}
-                        filters={filters}
+                        selectedSources={selectedSources}
                     />
                 </div>
             </ReactModal>

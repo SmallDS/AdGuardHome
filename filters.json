@@ -1,5 +1,5 @@
 {
-    "catalog1": {
+    "category1": {
         "list1": {
             "homepage": "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt",
             "source": "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt"
@@ -9,7 +9,7 @@
             "source": "https://www.malwaredomainlist.com/hostslist/hosts.txt"
         }
     },
-    "catalog2": {
+    "category2": {
         "Scam Blocklist by DurableNapkin": {
             "homepage": "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt",
             "source": "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt"
@@ -19,8 +19,8 @@
             "source": "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext"
         }
     },
-    "catalog3": {
-        "list5": {
+    "category3": {
+        "\uD83C\uDDE6\uD83C\uDDF9 list5": {
             "homepage": "https://filtri-dns.ga/filtri.txt",
             "source": "https://filtri-dns.ga/filtri.txt"
         },

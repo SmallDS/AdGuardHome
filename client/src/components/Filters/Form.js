@@ -7,33 +7,38 @@ import flow from 'lodash/flow';
 import { renderInputField, required, isValidPath, renderSelectField } from '../../helpers/form';
 import { MODAL_OPEN_TIMEOUT, MODAL_TYPE } from '../../helpers/constants';
 
-const renderFilters = filtersCatalog => Object.entries(filtersCatalog)
-    .map(([categoryName, listObj]) =>
-        <div key={categoryName} className="pt-4">
-            <h6 className="form__label form__label--with-desc form__label--bold pb-2">
-                <Trans>{categoryName}</Trans></h6>
-            {Object.entries(listObj)
-                .map(([listName, { homepage, source }]) =>
-                    <div key={listName} className="d-flex align-items-center">
-                        <Field
-                            name={listName}
-                            type="checkbox"
-                            component={renderSelectField}
-                            placeholder={<Trans>{listName}</Trans>}
-                            disabled={false}
-                        />
-                         <a href={homepage} className="ml-1">
-                            <svg className="nav-icon">
-                                <use xlinkHref='#dashboard' />
-                            </svg>
-                         </a>
-                        <a href={source}>
-                            <svg className="nav-icon">
-                                <use xlinkHref='#setup' />
-                            </svg>
-                        </a>
-                    </div>)}
-        </div>);
+const renderFilters = (filtersCatalog, selectedSources) =>
+    Object.entries(filtersCatalog)
+        .map(([categoryName, listObj]) =>
+            <div key={categoryName} className="modal-body__item">
+                <h6 className="form__label form__label--with-desc form__label--bold pb-2">
+                    <Trans>{categoryName}</Trans></h6>
+                {Object.entries(listObj)
+                    .map(([listName, { homepage, source }]) => {
+                        const isSelected = Object.prototype
+                            .hasOwnProperty.call(selectedSources, source);
+
+                        return <div key={listName} className="d-flex align-items-center">
+                            <Field
+                                name={listName}
+                                type="checkbox"
+                                component={renderSelectField}
+                                placeholder={<Trans>{listName}</Trans>}
+                                disabled={isSelected}
+                            />
+                            <a href={homepage} className="ml-1 d-flex align-items-center">
+                                <svg className="nav-icon">
+                                    <use xlinkHref='#dashboard' />
+                                </svg>
+                            </a>
+                            <a href={source} className="d-flex align-items-center">
+                                <svg className="nav-icon">
+                                    <use xlinkHref='#setup' />
+                                </svg>
+                            </a>
+                        </div>;
+                    })}
+            </div>);
 
 const Form = (props) => {
     const {
@@ -45,6 +50,7 @@ const Form = (props) => {
         whitelist,
         modalType,
         toggleFilteringModal,
+        selectedSources,
         filtersCatalog,
     } = props;
 
@@ -59,9 +65,9 @@ const Form = (props) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="modal-body">
+            <div className="modal-body modal-body--medium">
                 {modalType === MODAL_TYPE.SELECT_MODAL_TYPE &&
-                <div>
+                <div className="d-flex justify-content-around">
                     <button onClick={openFilteringListModal}
                             className="btn btn-success btn-standard mr-2 btn-large">
                         Choose from a list
@@ -70,7 +76,8 @@ const Form = (props) => {
                         Add a custom list
                     </button>
                 </div>}
-                {modalType === MODAL_TYPE.CHOOSE_FILTERING_LIST && renderFilters(filtersCatalog)}
+                {modalType === MODAL_TYPE.CHOOSE_FILTERING_LIST
+                && renderFilters(filtersCatalog, selectedSources)}
                 {modalType !== MODAL_TYPE.CHOOSE_FILTERING_LIST
                 && modalType !== MODAL_TYPE.SELECT_MODAL_TYPE && <Fragment>
                     <div className="form__group">
@@ -82,6 +89,7 @@ const Form = (props) => {
                             className="form-control"
                             placeholder={t('enter_name_hint')}
                             validate={[required]}
+                            normalizeOnBlur={data => data.trim()}
                         />
                     </div>
                     <div className="form__group">
@@ -93,6 +101,7 @@ const Form = (props) => {
                             className="form-control"
                             placeholder={t('enter_url_or_path_hint')}
                             validate={[required, isValidPath]}
+                            normalizeOnBlur={data => data.trim()}
                         />
                     </div>
                     <div className="form__description">
@@ -131,6 +140,7 @@ Form.propTypes = {
     modalType: PropTypes.string.isRequired,
     toggleFilteringModal: PropTypes.func.isRequired,
     filtersCatalog: PropTypes.object.isRequired,
+    selectedSources: PropTypes.object,
 };
 
 export default flow([
