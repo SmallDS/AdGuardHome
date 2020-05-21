@@ -99,12 +99,20 @@ export const renderGroupField = ({
 };
 
 export const renderRadioField = ({
-    input, placeholder, disabled, meta: { touched, error },
+    input,
+    placeholder,
+    subtitle,
+    disabled,
+    meta: { touched, error },
 }) => (
     <Fragment>
-        <label className="custom-control custom-radio custom-control-inline">
+        <label className="custom-control custom-radio">
             <input {...input} type="radio" className="custom-control-input" disabled={disabled} />
             <span className="custom-control-label">{placeholder}</span>
+            {subtitle && <span
+                className="checkbox__label-subtitle"
+                dangerouslySetInnerHTML={{ __html: subtitle }}
+            />}
         </label>
         {!disabled &&
         touched &&
@@ -121,26 +129,24 @@ export const renderSelectField = ({
     modifier = 'checkbox--form',
     meta: { touched, error },
 }) => (
-        <Fragment>
-            <label className={`checkbox ${modifier}`} onClick={onClick}>
-                <span className="checkbox__marker" />
-                <input {...input} type="checkbox" className="checkbox__input" disabled={disabled} />
-                <span className="checkbox__label">
+    <Fragment>
+        <label className={`checkbox ${modifier}`} onClick={onClick}>
+            <span className="checkbox__marker" />
+            <input {...input} type="checkbox" className="checkbox__input" disabled={disabled} />
+            <span className="checkbox__label">
                     <span className="checkbox__label-text checkbox__label-text--long">
                         <span className="checkbox__label-title">{placeholder}</span>
-                        {subtitle && (
-                            <span
-                                className="checkbox__label-subtitle"
-                                dangerouslySetInnerHTML={{ __html: subtitle }}
-                            />
-                        )}
+                        {subtitle && <span
+                            className="checkbox__label-subtitle"
+                            dangerouslySetInnerHTML={{ __html: subtitle }}
+                        />}
                     </span>
                 </span>
-            </label>
-            {!disabled &&
-            touched &&
-            (error && <span className="form__message form__message--error">{error}</span>)}
-        </Fragment>
+        </label>
+        {!disabled &&
+        touched &&
+        (error && <span className="form__message form__message--error">{error}</span>)}
+    </Fragment>
 );
 
 export const renderServiceField = ({
