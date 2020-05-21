@@ -44,6 +44,7 @@ const Form = (props) => {
             type="text"
             className="form-control form-control--textarea font-monospace"
             disabled={disabled}
+            normalizeOnBlur={data => data.split('\n').map(line => line.trim()).join('\n').trim()}
         />
     </div>;
 

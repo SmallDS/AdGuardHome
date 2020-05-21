@@ -57,7 +57,7 @@ const renderBlockingButton = (blocked, ip, handleClick, processing) => {
     );
 };
 
-const isBlockedClient = (clients, ip) => !!(clients && clients.includes(ip));
+const isBlockedClient = (clients, ip) => !!(clients && clients.match(new RegExp(`^${ip}$`, 'gm')));
 
 const clientCell = (t, toggleClientStatus, processing, disallowedClients) =>
     function cell(row) {
