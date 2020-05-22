@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Trans, withNamespaces } from 'react-i18next';
 import flow from 'lodash/flow';
 import { renderTextareaField } from '../../../../helpers/form';
+import { normalizeMultiline } from '../../../../helpers/helpers';
 
 const fields = [
     {
@@ -44,7 +45,7 @@ const Form = (props) => {
             type="text"
             className="form-control form-control--textarea font-monospace"
             disabled={disabled}
-            normalizeOnBlur={data => data.split('\n').map(line => line.trim()).join('\n').trim()}
+            normalizeOnBlur={normalizeMultiline}
         />
     </div>;
 

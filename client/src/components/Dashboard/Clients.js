@@ -7,7 +7,7 @@ import Card from '../ui/Card';
 import Cell from '../ui/Cell';
 
 import { getPercent } from '../../helpers/helpers';
-import { STATUS_COLORS } from '../../helpers/constants';
+import { isClientInIpsOrCidrs, STATUS_COLORS } from '../../helpers/constants';
 import { formatClientCell } from '../../helpers/formatClientCell';
 
 const getClientsPercentColor = (percent) => {
@@ -57,7 +57,12 @@ const renderBlockingButton = (blocked, ip, handleClick, processing) => {
     );
 };
 
-const isBlockedClient = (clients, ip) => !!(clients && clients.match(new RegExp(`^${ip}$`, 'gm')));
+const isBlockedClient = (rawClients, client) => {
+    if (!rawClients || !client) {
+        return false;
+    }
+    return isClientInIpsOrCidrs(rawClients, client);
+};
 
 const clientCell = (t, toggleClientStatus, processing, disallowedClients) =>
     function cell(row) {

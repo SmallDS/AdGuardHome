@@ -459,3 +459,8 @@ export const formatNumber = (num) => {
     const currentLanguage = i18n.languages[0] || DEFAULT_LANGUAGE;
     return num.toLocaleString(currentLanguage);
 };
+
+export const normalizeMultiline = multiline =>
+    `${normalizeTextarea(multiline)
+        .map(line => line.trim())
+        .join('\n')}\n`;
